@@ -5,10 +5,10 @@ public class Main {
     public static final int NB_DES = 5;
     public static final int NUM_FACES_DE_MAX = 6;
     public static final int NB_TENTATIVES_MAX = 3;
-    public static final String[] REPONSES_POSSIBLES = new String[]{"y", "n"};
 
     /**
      * Point d'entrée du programme
+     *
      * @param args args
      */
     public static void main(String[] args) {
@@ -16,18 +16,14 @@ public class Main {
         int[] listeDes = lancerDesDes(NB_DES);
         int nbTentativesRestantes = NB_TENTATIVES_MAX - 1;
 
-        // Relancement des dés
         do {
             afficherDes(listeDes);
 
             System.out.println("Il reste " + nbTentativesRestantes + " tentatives.");
             // Demande si il faut relancer les dés
-            if (saisirChaineParmiPlusieursChoix("Relancer [y/n] ? ", REPONSES_POSSIBLES).equals("y")) {
+            if (saisirChaine("Relancer [y/n] ? ").equals("y")) {
                 // Saisie des dés à relancer
-                String desARelancer = saisirChaine("Quelles dés voulez-vous relancer ? ");
-                for (String deARelancer : desARelancer.split(" ")) {
-                    listeDes[Integer.parseInt(deARelancer) - 1] = lancerDe();
-                }
+                relancerCertainsDes(saisirChaine("Quelles dés voulez-vous relancer ? "), listeDes);
                 --nbTentativesRestantes;
             } else {
                 nbTentativesRestantes = 0;
@@ -36,11 +32,12 @@ public class Main {
 
         // Calcul et affichage de la somme des dés
         afficherDes(listeDes);
-        System.out.println("Le total des dés est : " + calculerSommeDes(listeDes, NB_DES) + ".");
+        System.out.println("Le total des dés est : " + calculerSommeDes(listeDes) + ".");
     }
 
     /**
      * Lance un dé
+     *
      * @return le numéro du lancer
      */
     private static int lancerDe() {
@@ -50,6 +47,7 @@ public class Main {
 
     /**
      * Affiche les des
+     *
      * @param listeDes liste des dés
      */
     private static void afficherDes(int[] listeDes) {
@@ -61,6 +59,7 @@ public class Main {
 
     /**
      * lancer des dés
+     *
      * @return les lancers de dés
      */
     private static int[] lancerDesDes(int nbLancers) {
@@ -73,19 +72,21 @@ public class Main {
 
     /**
      * calcule la somme
+     *
      * @param listeDes liste des dés
      * @return la somme
      */
-    private static int calculerSommeDes(int[] listeDes, int nbDes) {
+    private static int calculerSommeDes(int[] listeDes) {
         int totalDes = 0;
-        for (int index = 0; index < nbDes; index++) {
-            totalDes += listeDes[index];
+        for (int listeDe : listeDes) {
+            totalDes += listeDe;
         }
         return totalDes;
     }
 
     /**
      * Fait la saisie d'une chaine de caractères
+     *
      * @param prompt pour l'utilisateur
      * @return la saisie
      */
@@ -96,29 +97,13 @@ public class Main {
     }
 
     /**
-     * Demande la saisie de l'utilisateur d'apres plusieurs choix
-     * @param prompt pour l'utilisateur
-     * @param listeChoix liste des options de l'utilisateur
-     * @return saisie de l'utilisateur
+     * Relance certains dés d'une liste de dés
+     * @param desARelancer liste des dés à relancer
+     * @param listeDes liste des dés actuelle
      */
-    private static String saisirChaineParmiPlusieursChoix(String prompt, String[] listeChoix) {
-        String saisie;
-        boolean repeterSaisie = true;
-        do {
-            // Saisie de l'utilisateur
-            System.out.print(prompt);
-            Scanner scanner = new Scanner(System.in);
-            saisie = scanner.nextLine();
-
-            // Controle si saisie est valide
-            for (String choix : listeChoix)
-                if (choix.equals(saisie)) {
-                    repeterSaisie = false;
-                    break;
-                }
-            if (repeterSaisie)
-                System.out.println("La saisie est invalide");
-        } while (repeterSaisie);
-        return saisie;
+    private static void relancerCertainsDes(String desARelancer, int[] listeDes){
+        for (String deARelancer : desARelancer.split(" ")) {
+            listeDes[Integer.parseInt(deARelancer) - 1] = lancerDe();
+        }
     }
 }
