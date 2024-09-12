@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
@@ -6,6 +7,8 @@ public class Main {
     public static final int NB_DES = 5;
     public static final int NBRE_FACES = 6;
     public static final int NB_TENTATIVES_MAX = 3;
+    public static final int NB_DES_CONCECUTIFS_PETITE_SUITE = 4;
+    public static final int NB_DES_CONCECUTIFS_GRANDE_SUITE = 5;
 
     /**
      * Point d'entrée du programme
@@ -22,7 +25,10 @@ public class Main {
         compterChaqueNbreFaces(listeDes, nbChiffre);
         afficherNbreFacesVisibles(nbChiffre);
 
-        int[] listeDesTest = {1, 2, 3, 4, 5};
+        int[] listeDesTest = {2, 4, 3, 4, 5};
+        if (estPetiteSuite(listeDesTest)){
+            System.out.println("C'est une petite suite !!!");
+        }
 
         do {
             afficherDes(listeDes);
@@ -143,84 +149,49 @@ public class Main {
     }
 
     /**
-     * Test si des dés représente un Yatzee
+     * teste si une liste de dés représente une petite suite.
      *
-     * @param listeDes à tester
-     * @return vrai si yatzee et faux si pas yatzee
+     * @param listeDes liste des dés a tester
+     * @return si c'est une petite suite ou pas.
      */
-    private static boolean estYatzee(int[] listeDes) {
-        boolean estYatzee = true;
-        for (int listeDe : listeDes) {
-            if (listeDe != listeDes[0])
-                estYatzee = false;
-        }
-
-        return estYatzee;
-    }
-
-    /**
-     * teste si une suite de dés représente un carré
-     *
-     * @param nbreDesParFaceVisible nbre de de dés pour chaque face visible
-     * @return si la suite de dés représente un carré
-     */
-    private static boolean estCarre(int[] nbreDesParFaceVisible) {
-        boolean estCarre = false;
-        for (int nbreFaces : nbreDesParFaceVisible) {
-            if (nbreFaces == 4)
-                estCarre = true;
-        }
-
-        return estCarre;
-    }
-
-    /**
-     * Teste si une suite de dés représente un brelan (3 dés de la meme face)
-     *
-     * @param nbreDesParFaceVisible nbre de dés pour chaque face visible
-     * @return si la suite de dé est brelan
-     */
-    private static boolean estBrelan(int[] nbreDesParFaceVisible) {
-        boolean estBrelan = false;
-        for (int nbDes : nbreDesParFaceVisible) {
-            if (nbDes == 3)
-                estBrelan = true;
-        }
-        return estBrelan;
-    }
-
-    /**
-     * teste si une suite de dés représente un full
-     *
-     * @param nbreDesParFaceVisible nombre de dés qui montre chaque face visible
-     * @return si la suite de dés représente un full.
-     */
-    private static boolean estFull(int[] nbreDesParFaceVisible) {
-        boolean aUnePair = false;
-        boolean aUnTriple = false;
-
-        for (int nbDes : nbreDesParFaceVisible) {
-            if (nbDes == 3) {
-                aUnTriple = true;
-            } else if (nbDes == 2) {
-                aUnePair = true;
-            }
-        }
-        return aUnTriple && aUnePair;
-    }
-
-
     private static boolean estPetiteSuite(int[] listeDes) {
-        int[] listeDesTemp = listeDes;
-        boolean estPetiteSuite = true;
+        boolean estPetiteSuite = false;
+        int nbConcecutifs = 0;
+        Arrays.sort(listeDes);
 
-        Arrays.sort(listeDesTemp); // Triage de la liste des dés
-
-        for (int index = 0; index < listeDesTemp.length; index++) {
-            if (listeDesTemp[index] != index + 1 && listeDesTemp[index] != index + 2 && listeDesTemp[index] != index + 3) {
-                estPetiteSuite = false;
+        // comptage du nombre de dés concécutifs
+        for (int index = 1; index < listeDes.length; index++) {
+            if (listeDes[index] == listeDes[index - 1] + 1) { // teste si le dés précédent est concécutif au dé actuel
+                if (nbConcecutifs == 0)
+                    nbConcecutifs += 2;
+                else
+                    nbConcecutifs++;
+                if (nbConcecutifs == 4) {
+                    estPetiteSuite = true;
+                }
+            } else if (listeDes[index] != listeDes[index - 1]){
+                nbConcecutifs = 0;
             }
         }
+
         return estPetiteSuite;
+    }
+
+    /**
+     * Teste si la liste des dés est concécutifs
+     * @param listeDes liste des dés à tester
+     * @return si la liste est une grande suite ou pas.
+     */
+    private static boolean estGrandeSuite(int[] listeDes){
+        boolean estGrandeSuite = true;
+        Arrays.sort(listeDes);
+
+        // teste si les dés de la liste sont concécutifs
+        for (int index = 1; index < listeDes.length; index++){
+            if (listeDes[index] != listeDes[index - 1] + 1){
+                estGrandeSuite = false;
+            }
+        }
+        return estGrandeSuite;
     }
 }
