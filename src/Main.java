@@ -1,5 +1,4 @@
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -11,7 +10,7 @@ public class Main {
     /**
      * Point d'entrée du programme
      *
-     * @param args args
+     * @param args arguments
      */
     public static void main(String[] args) {
         // Création du tableau et lancement des dés
@@ -23,13 +22,15 @@ public class Main {
         compterChaqueNbreFaces(listeDes, nbChiffre);
         afficherNbreFacesVisibles(nbChiffre);
 
+        int[] listeDesTest = {1, 2, 3, 4, 5};
+
         do {
             afficherDes(listeDes);
-            Collections.sort(listeDes);
+
             System.out.println("Il reste " + nbTentativesRestantes + " tentatives.");
             // Demande si il faut relancer les dés
             if (saisirChaine("Relancer [y/n] ? ").equals("y")) {
-                // Saisie des dés à relancer
+                // Saisie et relance des dés.
                 relancerCertainsDes(saisirChaine("Quelles dés voulez-vous relancer ? "), listeDes);
                 --nbTentativesRestantes;
             } else {
@@ -117,14 +118,13 @@ public class Main {
 
     /**
      * Compte le nombre de dés qui affiche chaque face
-     * @param listeDes liste des dés
+     *
+     * @param listeDes              liste des dés
      * @param nbreDesParFaceVisible nbre de dés qui montre chaque faces
      */
     private static void compterChaqueNbreFaces(int[] listeDes, int[] nbreDesParFaceVisible) {
         int[] nbChiffreTemp = new int[NBRE_FACES];
-        // initialisation du tableau à 0
-        for (int index = 0; index < nbChiffreTemp.length; index++)
-            nbChiffreTemp[index] = 0;
+
         for (int de : listeDes) {
             nbreDesParFaceVisible[de - 1]++;
         }
@@ -133,6 +133,7 @@ public class Main {
 
     /**
      * affiche le nombre de dés qui montre chaque face
+     *
      * @param nbreDesParFaceVisible nbre de dés qui montre chaque face
      */
     private static void afficherNbreFacesVisibles(int[] nbreDesParFaceVisible) {
@@ -143,13 +144,14 @@ public class Main {
 
     /**
      * Test si des dés représente un Yatzee
+     *
      * @param listeDes à tester
      * @return vrai si yatzee et faux si pas yatzee
      */
-    private static boolean estYatzee(int[] listeDes){
+    private static boolean estYatzee(int[] listeDes) {
         boolean estYatzee = true;
-        for (int index = 0; index < listeDes.length; index++){
-            if (listeDes[index] != listeDes[0])
+        for (int listeDe : listeDes) {
+            if (listeDe != listeDes[0])
                 estYatzee = false;
         }
 
@@ -158,10 +160,11 @@ public class Main {
 
     /**
      * teste si une suite de dés représente un carré
+     *
      * @param nbreDesParFaceVisible nbre de de dés pour chaque face visible
      * @return si la suite de dés représente un carré
      */
-    private static boolean estCarre(int[] nbreDesParFaceVisible){
+    private static boolean estCarre(int[] nbreDesParFaceVisible) {
         boolean estCarre = false;
         for (int nbreFaces : nbreDesParFaceVisible) {
             if (nbreFaces == 4)
@@ -173,13 +176,14 @@ public class Main {
 
     /**
      * Teste si une suite de dés représente un brelan (3 dés de la meme face)
+     *
      * @param nbreDesParFaceVisible nbre de dés pour chaque face visible
      * @return si la suite de dé est brelan
      */
-    private static boolean estBrelan(int[] nbreDesParFaceVisible){
+    private static boolean estBrelan(int[] nbreDesParFaceVisible) {
         boolean estBrelan = false;
-        for (int index = 0; index < nbreDesParFaceVisible.length; index++){
-            if (nbreDesParFaceVisible[index] == 3)
+        for (int nbDes : nbreDesParFaceVisible) {
+            if (nbDes == 3)
                 estBrelan = true;
         }
         return estBrelan;
@@ -187,20 +191,36 @@ public class Main {
 
     /**
      * teste si une suite de dés représente un full
+     *
      * @param nbreDesParFaceVisible nombre de dés qui montre chaque face visible
      * @return si la suite de dés représente un full.
      */
-    private static boolean estFull(int[] nbreDesParFaceVisible){
+    private static boolean estFull(int[] nbreDesParFaceVisible) {
         boolean aUnePair = false;
         boolean aUnTriple = false;
 
-        for (int index = 0; index < nbreDesParFaceVisible.length; index++){
-            if (nbreDesParFaceVisible[index] == 3){
+        for (int nbDes : nbreDesParFaceVisible) {
+            if (nbDes == 3) {
                 aUnTriple = true;
-            } else if (nbreDesParFaceVisible[index] == 2){
+            } else if (nbDes == 2) {
                 aUnePair = true;
             }
         }
         return aUnTriple && aUnePair;
+    }
+
+
+    private static boolean estPetiteSuite(int[] listeDes) {
+        int[] listeDesTemp = listeDes;
+        boolean estPetiteSuite = true;
+
+        Arrays.sort(listeDesTemp); // Triage de la liste des dés
+
+        for (int index = 0; index < listeDesTemp.length; index++) {
+            if (listeDesTemp[index] != index + 1 && listeDesTemp[index] != index + 2 && listeDesTemp[index] != index + 3) {
+                estPetiteSuite = false;
+            }
+        }
+        return estPetiteSuite;
     }
 }
