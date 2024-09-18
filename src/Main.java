@@ -1,4 +1,3 @@
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
@@ -7,7 +6,7 @@ public class Main {
     public static final int NB_DES = 5;
     public static final int NBRE_FACES = 6;
     public static final int NB_TENTATIVES_MAX = 3;
-    public static final int NB_DES_CONCECUTIFS_PETITE_SUITE = 4;
+    public static final int NB_DES_CONCECUTIFS_POUR_PETITE_SUITE = 4;
     public static final int NB_DES_CONCECUTIFS_GRANDE_SUITE = 5;
 
     /**
@@ -25,8 +24,10 @@ public class Main {
         compterChaqueNbreFaces(listeDes, nbChiffre);
         afficherNbreFacesVisibles(nbChiffre);
 
-        int[] listeDesTest = {2, 4, 3, 4, 5};
-        if (estPetiteSuite(listeDesTest)){
+        int[] listeDesTest = {3, 5, 6, 3, 4};
+        if (estGrandeSuite(listeDesTest)){
+            System.out.println("C'est une grande suite !!!");
+        } else if (estPetiteSuite(listeDesTest)){
             System.out.println("C'est une petite suite !!!");
         }
 
@@ -58,7 +59,6 @@ public class Main {
         Random random = new Random();
         return random.nextInt(NBRE_FACES) + 1;
     }
-
     /**
      * Affiche les des
      *
@@ -155,26 +155,24 @@ public class Main {
      * @return si c'est une petite suite ou pas.
      */
     private static boolean estPetiteSuite(int[] listeDes) {
-        boolean estPetiteSuite = false;
-        int nbConcecutifs = 0;
+        int nbConcecutifs = 1;
         Arrays.sort(listeDes);
 
         // comptage du nombre de dés concécutifs
         for (int index = 1; index < listeDes.length; index++) {
             if (listeDes[index] == listeDes[index - 1] + 1) { // teste si le dés précédent est concécutif au dé actuel
-                if (nbConcecutifs == 0)
-                    nbConcecutifs += 2;
-                else
                     nbConcecutifs++;
-                if (nbConcecutifs == 4) {
-                    estPetiteSuite = true;
-                }
-            } else if (listeDes[index] != listeDes[index - 1]){
-                nbConcecutifs = 0;
+
+                // Teste si il y a une petite suite
+                if (nbConcecutifs == NB_DES_CONCECUTIFS_POUR_PETITE_SUITE)
+                    return true;
+
+            } else if (listeDes[index] != listeDes[index - 1]){ // Teste qu'il n'y ait pas suite de deux nombre égaux (car peut quand meme être une petite suite)
+                nbConcecutifs = 1;
             }
         }
 
-        return estPetiteSuite;
+        return false;
     }
 
     /**
@@ -188,8 +186,9 @@ public class Main {
 
         // teste si les dés de la liste sont concécutifs
         for (int index = 1; index < listeDes.length; index++){
-            if (listeDes[index] != listeDes[index - 1] + 1){
+            if (listeDes[index] != listeDes[index - 1] + 1) {
                 estGrandeSuite = false;
+                break;
             }
         }
         return estGrandeSuite;
