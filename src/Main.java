@@ -18,6 +18,8 @@ public class Main {
     public static final int COMBINAISON_CHANCE = 6;
     public static final String[] COMBINAISONS_STRING = {"BRELAN     ", "CARRÉ      ", "FULL       ", "PETITE SUITE", "GRANDE SUITE", "YAHTZEE    ", "CHANCE     "};
 
+    public static final int NB_MEMES_FACE_BRELAN = 3;
+    public static final int NB_MEMES_FACE_CARRE = 4;
 
     public static final int NB_POINTS_FULL = 25;
     public static final int NB_POINTS_PETITE_SUITE = 30;
@@ -32,29 +34,25 @@ public class Main {
      */
     public static void main(String[] args) {
         boolean[] combinaisonsUtilisees = {false, false, false, false, false, false, false};
-        int[] listeDes = new int[0];
+        int[] listeDes;
         int nbPointsTotal = 0;
 
+        // démarrage du jeu
         for (int nbManche = 1; nbManche <= NB_MANCHES; nbManche++) {
+
             // Affichage nombre Manche
-            System.out.println("Manche " + nbManche + ".");
+            System.out.println("\n\nManche " + nbManche + ".");
 
             // Lancement des dés
             listeDes = lancerDesDes(NB_DES);
-
             int nbTentativesRestantes = NB_TENTATIVES_MAX - 1;
 
-            // teste des fonctions
-            int[] listeDesTest = {3, 3, 1, 1, 3};
-            boolean[] combinaisonsUtiliseesTest = {false, false, false, false, false, false, false};
-            int nbPointsTotalTest = calculerEtAfficherScoreObtenu(combinaisonsUtiliseesTest, listeDesTest);
-            System.out.println("Vous avez eu " + nbPointsTotalTest + " points.");
-            afficherCombinaisonsRestantes(combinaisonsUtiliseesTest);
-
+            // affichage et relance des dés si demandé par l'utilisateur
             do {
                 afficherDes(listeDes);
 
                 System.out.println("Il reste " + nbTentativesRestantes + " tentatives.");
+
                 // Demande si il faut relancer les dés
                 if (saisirChaine("Relancer [y/n] ? ").equals("y")) {
                     // Saisie et relance des dés.
@@ -65,19 +63,26 @@ public class Main {
                 }
             } while (nbTentativesRestantes != 0);
 
-            // Calcule des points de la manche
-            int nbPointsObtenu = calculerEtAfficherScoreObtenu(combinaisonsUtilisees,listeDes);
-            nbPointsTotal += nbPointsObtenu;
+            // afficher Combinaisons restantes
+            afficherCombinaisonsRestantes(combinaisonsUtilisees);
+
+            // Calcule et affichage des points de la manche
+            int nbPointsObtenu = calculerEtAfficherScoreObtenu(combinaisonsUtilisees, listeDes);
             System.out.println("Nombre de points obtenu : " + nbPointsObtenu);
+
+            // Ajouts et affichage de ces points au nombre de points final
+            nbPointsTotal += nbPointsObtenu;
+            System.out.println("\nNombre de points final : " + nbPointsTotal);
+
+            if (nbManche != NB_MANCHES) // si ce n'est pas la derniere manche
+                saisirChaine("Appuyez sur entrée pour passer à la manche suivante.");
         }
-        afficherDes(listeDes);
-        System.out.println("Le total des dés est : " + calculerSommeDes(listeDes) + ".");
 
         // Affichage des combinaisons restantes
         afficherCombinaisonsRestantes(combinaisonsUtilisees);
 
         // Affichage finale des points
-        System.out.println("Vous avez eu " + nbPointsTotal + " points.");
+        System.out.println("Score final : " + nbPointsTotal);
     }
 
     /**
@@ -350,6 +355,7 @@ public class Main {
         return nbPointsObtenu;
     }
 
+
     /**
      * Calcule le nombre de points si il y a un brelan
      *
@@ -357,10 +363,10 @@ public class Main {
      * @return le nombre de points obtenu avec le brelan.
      */
     private static int calculerNbrePointsBrelan(int[] nbreDesParFaceVisible) {
-        for (int nbreDes : nbreDesParFaceVisible)
-            if (nbreDes != 3)
-                return nbreDes * 3;
-
+        for (int index = nbreDesParFaceVisible.length - 1; index >= 0; index--) {
+            if (nbreDesParFaceVisible[index] == NB_MEMES_FACE_BRELAN)
+                return (index + 1) * NB_MEMES_FACE_BRELAN;
+        }
         return 0;
     }
 
@@ -371,20 +377,21 @@ public class Main {
      * @return le nombre de points obtenu avec le brelan.
      */
     private static int calculerNbrePointsCarre(int[] nbreDesParFaceVisible) {
-        for (int nbreDes : nbreDesParFaceVisible)
-            if (nbreDes != 4)
-                return nbreDes * 4;
+        for (int index = 0; index < nbreDesParFaceVisible.length; index++)
+            if (nbreDesParFaceVisible[index] == NB_MEMES_FACE_CARRE)
+                return (index + 1) * NB_MEMES_FACE_CARRE;
 
         return 0;
     }
 
     /**
      * affiche un talbeau contenant les combinaisons et si elles ont déja été trouvé
+     *
      * @param combinaisonsRestantes tableau contenant les combinaisons déja utilisé
      */
     private static void afficherCombinaisonsRestantes(boolean[] combinaisonsRestantes) {
         System.out.println("COMBINAISONS RESTANTES :" +
-                         "\n-----------------");
+                "\n-----------------");
         for (int index = 0; index < combinaisonsRestantes.length; index++) {
             System.out.print(COMBINAISONS_STRING[index] + "  \t | ");
             if (combinaisonsRestantes[index]) {
