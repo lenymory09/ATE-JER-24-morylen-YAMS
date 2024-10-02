@@ -1,14 +1,8 @@
 import java.util.Arrays;
 
-/**
- * @author morylen
- */
 public class Combinaisons {
     private static final int NB_DES_CONCECUTIFS_POUR_PETITE_SUITE = 4;
-    private static final int NB_DES_CONCECUTIFS_POUR_GRANDE_SUITE = 5;
     public static final String[] COMBINAISONS_STRING = {"BRELAN     ", "CARRÉ      ", "FULL       ", "PETITE SUITE", "GRANDE SUITE", "YAHTZEE    ", "CHANCE     "};
-
-    public static final int NBRE_FACES = 6;
 
     /**
      * teste si une liste de dés représente une petite suite.
@@ -135,7 +129,7 @@ public class Combinaisons {
      *
      * @param combinaisonsRestantes tableau contenant les combinaisons déja utilisé
      */
-    private static void afficherCombinaisonsRestantes(boolean[] combinaisonsRestantes) {
+    static void afficherCombinaisonsRestantes(boolean[] combinaisonsRestantes) {
         System.out.println("COMBINAISONS RESTANTES :" +
                 "\n-----------------");
         for (int index = 0; index < combinaisonsRestantes.length; index++) {

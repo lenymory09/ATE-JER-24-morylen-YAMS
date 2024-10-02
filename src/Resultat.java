@@ -1,6 +1,3 @@
-/**
- * @author morylen
- */
 public class Resultat {
     public static final int COMBINAISON_BRELAN = 0;
     public static final int COMBINAISON_CARRE = 1;
@@ -13,29 +10,24 @@ public class Resultat {
     public static final int NB_POINTS_PETITE_SUITE = 30;
     public static final int NB_POINTS_GRANDE_SUITE = 40;
     public static final int NB_POINTS_YAHTZEE = 50;
-    public static final int NB_DES = 5;
     public static final int NBRE_FACES = 6;
     public static final int NB_MEMES_FACE_BRELAN = 3;
     public static final int NB_MEMES_FACE_CARRE = 4;
 
-    int nbScore = 0;
-    int scoreActuelle = 0;
-    private boolean[] combinaisonsUtilisees = {false, false, false, false, false, false, false};
+    private int nbPointsFinal = 0;
+    private int nbPointsActuel = 0;
+    boolean[] combinaisonsUtilisees = {false, false, false, false, false, false, false};
 
-    public int getNbScore() {
-        return nbScore;
+    public int getNbPointsFinal() {
+        return nbPointsFinal;
     }
 
-    public void setNbScore(int nbScore) {
-        this.nbScore = nbScore;
+    public void setNbPointsActuel(int nbPointsActuel) {
+        this.nbPointsActuel = nbPointsActuel;
     }
 
-    public void setScoreActuelle(int scoreActuelle) {
-        this.scoreActuelle = scoreActuelle;
-    }
-
-    public int getScoreActuelle() {
-        return scoreActuelle;
+    public int getNbPointsActuel() {
+        return nbPointsActuel;
     }
 
     /**
@@ -138,6 +130,6 @@ public class Resultat {
     }
 
     public void addScoreActuel(){
-        nbScore += scoreActuelle;
+        nbPointsFinal += nbPointsActuel;
     }
 }

@@ -1,8 +1,5 @@
 import java.util.Random;
 
-/**
- * @author morylen
- */
 public class Joueur {
     public static final int NB_DES = 5;
     public static final int NBRE_FACES = 6;
@@ -24,22 +21,19 @@ public class Joueur {
 
     /**
      * Affiche les des
-     *
-     * @param listeDes liste des dés
      */
-    public void afficherDes(int[] listeDes) {
+    public void afficherDes() {
         // Affichage des lancers des dés
         for (int index = 0; index < NB_DES; index++) {
-            System.out.println("Dé " + (index + 1) + " : " + listeDes[index]);
+            System.out.println("Dé " + (index + 1) + " : " + desEnMain[index]);
         }
     }
 
     /**
      * lancer des dés
      *
-     * @return les lancers de dés
      */
-    public int[] lancerDesDes(int nbLancers) {
+    public void lancerDesDes(int nbLancers) {
         int[] listeDes = new int[nbLancers];
         for (int index = 0; index < nbLancers; index++) {
             listeDes[index] = lancerDe();
@@ -51,11 +45,10 @@ public class Joueur {
      * Relance certains dés d'une liste de dés
      *
      * @param desARelancer liste des dés à relancer
-     * @param listeDes     liste des dés actuelle
      */
-    public void relancerCertainsDes(String desARelancer, int[] listeDes) {
+    public void relancerCertainsDes(String desARelancer) {
         for (String deARelancer : desARelancer.split(" ")) {
-            listeDes[Integer.parseInt(deARelancer) - 1] = lancerDe();
+            desEnMain[Integer.parseInt(deARelancer) - 1] = lancerDe();
         }
     }
 
@@ -63,7 +56,7 @@ public class Joueur {
      * Calcule le score et ajoute ce score au score
      */
     public void ajouterScoreObtenu(){
-        resultat.scoreActuelle = resultat.calculerScore(desEnMain);
+        resultat.setNbPointsActuel(resultat.calculerScore(desEnMain));
         resultat.addScoreActuel();
     }
 }
