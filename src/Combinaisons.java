@@ -1,8 +1,12 @@
 import java.util.Arrays;
 
+/**
+ * @author morylen
+ */
 public class Combinaisons {
     private static final int NB_DES_CONCECUTIFS_POUR_PETITE_SUITE = 4;
     private static final int NB_DES_CONCECUTIFS_POUR_GRANDE_SUITE = 5;
+    public static final String[] COMBINAISONS_STRING = {"BRELAN     ", "CARRÉ      ", "FULL       ", "PETITE SUITE", "GRANDE SUITE", "YAHTZEE    ", "CHANCE     "};
 
     public static final int NBRE_FACES = 6;
 
@@ -12,7 +16,7 @@ public class Combinaisons {
      * @param listeDes liste des dés a tester
      * @return si c'est une petite suite ou pas.
      */
-    private static boolean estPetiteSuite(int[] listeDes) {
+    public static boolean estPetiteSuite(int[] listeDes) {
         int nbConcecutifs = 1;
         Arrays.sort(listeDes);
 
@@ -39,7 +43,7 @@ public class Combinaisons {
      * @param listeDes liste des dés à tester
      * @return si la liste est une grande suite ou pas.
      */
-    public boolean estGrandeSuite(int[] listeDes) {
+    public static boolean estGrandeSuite(int[] listeDes) {
         boolean estGrandeSuite = true;
         Arrays.sort(listeDes);
 
@@ -59,7 +63,7 @@ public class Combinaisons {
      * @param listeDes à tester
      * @return vrai si yatzee et faux si pas yatzee
      */
-    public boolean estYatzee(int[] listeDes) {
+    public static boolean estYatzee(int[] listeDes) {
         boolean estYatzee = true;
         for (int listeDe : listeDes) {
             if (listeDe != listeDes[0]) {
@@ -77,7 +81,7 @@ public class Combinaisons {
      * @param nbreDesParFaceVisible nbre de de dés pour chaque face visible
      * @return si la suite de dés représente un carré
      */
-    public boolean estCarre(int[] nbreDesParFaceVisible) {
+    public static boolean estCarre(int[] nbreDesParFaceVisible) {
         for (int nbreFaces : nbreDesParFaceVisible) {
             if (nbreFaces == 4) {
                 return true;
@@ -110,7 +114,7 @@ public class Combinaisons {
      * @param nbreDesParFaceVisible nombre de dés qui montre chaque face visible
      * @return si la suite de dés représente un full.
      */
-    public boolean estFull(int[] nbreDesParFaceVisible) {
+    public static boolean estFull(int[] nbreDesParFaceVisible) {
         boolean aUnePair = false;
         boolean aUnTriple = false;
 
@@ -124,20 +128,7 @@ public class Combinaisons {
         return aUnTriple && aUnePair;
     }
 
-    /**
-     * Compte le nombre de dés qui affiche chaque face
-     *
-     * @param listeDes liste des dés
-     */
-    private static int[] compterChaqueNbreFaces(int[] listeDes) {
-        int[] nbDesParFacesVisibles = new int[NBRE_FACES];
 
-        for (int de : listeDes) {
-            nbDesParFacesVisibles[de - 1]++;
-        }
-
-        return nbDesParFacesVisibles;
-    }
 
     /**
      * affiche un talbeau contenant les combinaisons et si elles ont déja été trouvé
