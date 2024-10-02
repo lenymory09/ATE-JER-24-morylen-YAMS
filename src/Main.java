@@ -12,6 +12,7 @@ public class Main {
      */
     public static void main(String[] args) {
         Joueur joueur = new Joueur();
+        Resultat resultat = new Resultat();
 
         // démarrage du jeu
         for (int nbManche = 1; nbManche <= NB_MANCHES; nbManche++) {
@@ -39,25 +40,25 @@ public class Main {
                 }
             } while (nbTentativesRestantes != 0);
 
-            // afficher Combinaisons restantes
-            Combinaisons.afficherCombinaisonsRestantes(joueur.resultat.combinaisonsUtilisees);
-
             // Calcule et affichage des points de la manche
-            joueur.ajouterScoreObtenu();
-            System.out.println("Nombre de points obtenu : " + joueur.resultat.getNbPointsActuel());
+            resultat.setNbPointsActuel(resultat.calculerScore(joueur.desEnMain));
+            System.out.println("Nombre de points obtenu : " + resultat.getNbPointsActuel());
+
+            // Ajouts de ces points dans le score final
+            resultat.setNbPointsFinal(resultat.getNbPointsFinal() + resultat.getNbPointsActuel());
 
             // affichage de ces points au nombre de points final
-            System.out.println("\nNombre de points final : " + joueur.resultat.getNbPointsFinal());
+            System.out.println("Nombre de points final : " + resultat.getNbPointsFinal());
+
+            // afficher Combinaisons restantes
+            Combinaisons.afficherCombinaisonsRestantes(resultat.combinaisonsUtilisees);
 
             if (nbManche != NB_MANCHES) // si ce n'est pas la derniere manche
                 saisirChaine("Appuyez sur entrée pour passer à la manche suivante.");
         }
 
-        // Affichage des combinaisons restantes
-        Combinaisons.afficherCombinaisonsRestantes(joueur.resultat.combinaisonsUtilisees);
-
         // Affichage finale des points
-        System.out.println("Score final : " + joueur.resultat.getNbPointsFinal());
+        System.out.println("Score final : " + resultat.getNbPointsFinal());
     }
 
     /**

@@ -122,14 +122,12 @@ public class Combinaisons {
         return aUnTriple && aUnePair;
     }
 
-
-
     /**
      * affiche un talbeau contenant les combinaisons et si elles ont déja été trouvé
      *
      * @param combinaisonsRestantes tableau contenant les combinaisons déja utilisé
      */
-    static void afficherCombinaisonsRestantes(boolean[] combinaisonsRestantes) {
+    public static void afficherCombinaisonsRestantes(boolean[] combinaisonsRestantes) {
         System.out.println("COMBINAISONS RESTANTES :" +
                 "\n-----------------");
         for (int index = 0; index < combinaisonsRestantes.length; index++) {

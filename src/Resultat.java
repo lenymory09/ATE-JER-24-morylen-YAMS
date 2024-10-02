@@ -18,16 +18,34 @@ public class Resultat {
     private int nbPointsActuel = 0;
     boolean[] combinaisonsUtilisees = {false, false, false, false, false, false, false};
 
+    /**
+     * @return le nombre de points final
+     */
     public int getNbPointsFinal() {
         return nbPointsFinal;
     }
 
+    /**
+     * assigne la valeur passé en parametre dans nbPointsActuel
+     * @param nbPointsActuel nouveau nombre de points actuel
+     */
     public void setNbPointsActuel(int nbPointsActuel) {
         this.nbPointsActuel = nbPointsActuel;
     }
 
+    /**
+     * @return le nombre de points actuel
+     */
     public int getNbPointsActuel() {
         return nbPointsActuel;
+    }
+
+    /**
+     * assigne à la variable nbPointsFinal la valeur passé en parametre
+     * @param nbPointsFinal nouveau nombre de points final
+     */
+    public void setNbPointsFinal(int nbPointsFinal) {
+        this.nbPointsFinal = nbPointsFinal;
     }
 
     /**
@@ -90,9 +108,8 @@ public class Resultat {
     /**
      * Trouve la combinaison des dés, affiche la combinaison et retourne le nombre de points.
      * @param listeDes              liste des dés à trouvé
-     * @return le score obtenu d'apres la combinaison
      */
-    int calculerScore(int[] listeDes) {
+    public int calculerScore(int[] listeDes) {
         int nbPointsObtenu = 0;
         int[] nbreDesParFaceVisible = compterChaqueNbreFaces(listeDes);
 
@@ -127,9 +144,5 @@ public class Resultat {
         }
 
         return nbPointsObtenu;
-    }
-
-    public void addScoreActuel(){
-        nbPointsFinal += nbPointsActuel;
     }
 }

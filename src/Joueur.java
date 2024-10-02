@@ -5,9 +5,6 @@ public class Joueur {
     public static final int NBRE_FACES = 6;
 
     int[] desEnMain = new int[5];
-    Resultat resultat = new Resultat();
-
-
 
     /**
      * Lance un dé
@@ -50,13 +47,5 @@ public class Joueur {
         for (String deARelancer : desARelancer.split(" ")) {
             desEnMain[Integer.parseInt(deARelancer) - 1] = lancerDe();
         }
-    }
-
-    /**
-     * Calcule le score et ajoute ce score au score
-     */
-    public void ajouterScoreObtenu(){
-        resultat.setNbPointsActuel(resultat.calculerScore(desEnMain));
-        resultat.addScoreActuel();
     }
 }
